@@ -3,6 +3,7 @@ CREATE database employee_trackerDB;
 
 USE employee_trackerDB;
 
+-- Employee table
 CREATE TABLE employee (
   id INTEGER NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) NOT NULL,
@@ -12,10 +13,16 @@ CREATE TABLE employee (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE user (
-  id INT NOT NULL AUTO_INCREMENT,
-  username VARCHAR(50) NOT NULL,
-  user_group_id INT NOT NULL,
+
+
+
+
+-- Role table
+CREATE TABLE role (
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  title VARCHAR(30) NOT NULL,
+  salary DECIMAL(10, 2) NOT NULL,
+  department_id INTEGER
   PRIMARY KEY (id),
   -- UNIQUE constraint can make a column, or multiple
   -- columns combined only able to have one match that is the same.
@@ -34,11 +41,14 @@ CREATE TABLE user (
     ON DELETE CASCADE
 );
 
-CREATE TABLE comment (
-  id INT NOT NULL AUTO_INCREMENT,
-  text VARCHAR(255) NULL,
-  responding_to_id INT NULL,
-  user_id INT NOT NULL,
+
+
+
+
+-- Department table
+CREATE TABLE department (
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  name VARCHAR(30) NOT NULL,
   PRIMARY KEY (id),
   -- INDEX makes a certain column faster to do joins on
   -- in this case we make `user_id` faster to join on
