@@ -1,33 +1,30 @@
 USE employee_trackerDB;
 
-INSERT INTO user_group (id, name)
-VALUES (1, "Hallowed Oblivion"),
-(2, "Sacred Ancients"),
-(3, "Hammers of the Fox"),
-(4, "Division of the Sacred"),
-(5, "Forge Hawks");
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES (),
+        (),
+        (),
+        (),
+        ();
 
-INSERT INTO user (id, username, user_group_id)
-VALUES (1, "Kearen", 1), -- Umeyarus is in Hallowed Oblivion group
-(2, "Ilinorin", 1), -- Umeyarus is in Hallowed Oblivion group
-(3, "Keanelis", 1), -- Umeyarus is in Hallowed Oblivion group
-(4, "Vasandoral", 1), -- Umeyarus is in Hallowed Oblivion group
-(5, "Balzeiros", 2), -- Umeyarus is in Sacred Ancients group
-(6, "Heiris", 2), -- Umeyarus is in Sacred Ancients group
-(7, "Omaydark", 2), -- Umeyarus is in Sacred Ancients group
-(8, "Adgolor", 3), -- Umeyarus is in Hammers of the Fox group
-(9, "Naesalor", 3), -- Umeyarus is in Hammers of the Fox group
-(10, "Liajyre", 3), -- Umeyarus is in Hammers of the Fox group
-(11, "Quira", 3), -- Umeyarus is in Hammers of the Fox group
-(12, "Xyrzana", 4), -- Umeyarus is in Division of the Sacred group
-(13, "Bryna", 4), -- Umeyarus is in Division of the Sacred group
-(14, "Sylkrana", 5), -- Umeyarus is in Forge Hawks group
-(15, "Keywynn", 5), -- Umeyarus is in Forge Hawks group
-(16, "Ulacaryn", 5), -- Umeyarus is in Forge Hawks group
-(17, "Qiynore", 5), -- Umeyarus is in Forge Hawks group
-(18, "Gregwyn", 5), -- Umeyarus is in Forge Hawks group
-(19, "Vallana", 5), -- Umeyarus is in Forge Hawks group
-(20, "Umeyarus", 1); -- Umeyarus is in Hallowed Oblivion group
+INSERT INTO role (title, salary, department_id)
+VALUES (), -- Umeyarus is in Hallowed Oblivion group
+        (), -- Umeyarus is in Hallowed Oblivion group
+        (), -- Umeyarus is in Hallowed Oblivion group
+        (), -- Umeyarus is in Hallowed Oblivion group
+
+INSERT INTO department (name)
+VALUES (), -- Umeyarus is in Hallowed Oblivion group
+        (), -- Umeyarus is in Hallowed Oblivion group
+        (), -- Umeyarus is in Hallowed Oblivion group
+
+
+
+
+
+
+
+
 
 INSERT INTO comment (id, text, user_id) -- this will be starting comments
 VALUES (1, "Discussion Thread: Hallowed Oblivion", 1), -- Kearen's comment
