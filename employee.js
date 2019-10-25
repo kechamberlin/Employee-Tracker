@@ -35,7 +35,11 @@ function start() {
                 "View All Employees",
                 "View All Roles",
                 "View All Departments",
-                "EXIT"]
+                "Add Employee",
+                "Add Role",
+                "Add Department",
+                "EXIT"
+            ]
         })
         .then(function (answer) {
             if (answer.whatDo === "View All Employees") {
@@ -49,8 +53,10 @@ function start() {
             else if (answer.whatDo === "View All Departments") {
                 console.log("view all departments");
                 viewDepartments();
-            // }
-
+            }
+            else if (answer.whatDo === "Add Employee") {
+                console.log("add an employee");
+                
 
 
 
