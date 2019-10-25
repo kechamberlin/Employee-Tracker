@@ -101,3 +101,11 @@ function viewDepartments() {
         start();
     })
 }
+
+
+
+// LEFT TO DO: [ADD] employees, roles, and departments; [UPDATE] employee roles, WRITE readme file.
+    // [ADD] functions are comparable to postAuction in greatBay activity
+
+    
+// BONUS: [UPDATE] employee managers, [VIEW] employees by manager, [DELETE] departments, roles, and employees, [VIEW] total salary budget
