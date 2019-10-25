@@ -38,21 +38,24 @@ function start() {
                 "Add Employee",
                 "Add Role",
                 "Add Department",
+                "Update an Employee",
+                "Update a Role",
+                "Update a Department",
                 "EXIT"
             ]
         })
         .then(function (answer) {
             if (answer.whatDo === "View All Employees") {
                 console.log("view all employees");
-                viewEmployees();
+                viewEmployees().then(() => start())
             }
             else if (answer.whatDo === "View All Roles") {
                 console.log("view all roles");
-                viewRoles();
+                viewRoles().then(() => start())
             }
             else if (answer.whatDo === "View All Departments") {
                 console.log("view all departments");
-                viewDepartments();
+                viewDepartments().then(() => start())
             }
             else if (answer.whatDo === "Add Employee") {
                 console.log("add an employee");
@@ -65,6 +68,18 @@ function start() {
             else if (answer.whatDo === "Add Department") {
                 console.log("add a department");
                 addDepartment();
+            }
+            else if (answer.whatDo === "Update an Employee") {
+                console.log("updated an employee");
+                updateEmployee();
+            }
+            else if (answer.whatDo === "Update a Role") {
+                console.log("updated a role");
+                // updateRole();
+            }
+            else if (answer.whatDo === "Update a Department") {
+                console.log("updated a department");
+                updateDepartment();
             }
             else {
                 connection.end();
@@ -83,11 +98,13 @@ function start() {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function viewEmployees() {
-    connection.query("SELECT * FROM employee", function (err, results) {
-        if (err) throw err;
-        console.table(results);
-        start();
-    })
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT * FROM employee", function (err, results) {
+            if (err) return reject(err);
+            console.table(results);
+            resolve(results);
+        })
+    });
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -95,11 +112,13 @@ function viewEmployees() {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function viewRoles() {
-    connection.query("SELECT * FROM role", function (err, results) {
-        if (err) throw err;
-        console.table(results);
-        start();
-    })
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT * FROM role", function (err, results) {
+            if (err) return reject(err);
+            console.table(results);
+            resolve(results);
+        })
+    });
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,11 +126,13 @@ function viewRoles() {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function viewDepartments() {
-    connection.query("SELECT * FROM department", function (err, results) {
-        if (err) throw err;
-        console.table(results);
-        start();
-    })
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT * FROM department", function (err, results) {
+            if (err) return reject(err);
+            console.table(results);
+            resolve(results);
+        })
+    });
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -172,42 +193,42 @@ function addEmployee() {
 //            Add Role
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function addRole() {
+async function addRole() {
     // prompt for info about the new role
-    inquirer
-        .prompt([
-            {
-                name: "title",
-                type: "input",
-                message: "What is the new role?"
-            },
-            {
-                name: "salary",
-                type: "input",
-                message: "What is the new role's salary?"
-            },
-            {
-                name: "department_id",
-                type: "input",
-                message: "Under what department does this role fall under?"
-            }
-        ])
-        .then(function (answer) {
-            // when finished prompting, insert a new item into the db with that info
-            connection.query(
-                "INSERT INTO role SET ?",
-                {
-                    title: answer.title,
-                    salary: answer.salary,
-                    department_id: answer.department_id || 0
-                },
-                function (err) {
-                    if (err) throw err;
-                    console.log("You added a new role!");
-                    start();
-                }
-            );
-        });
+    const answer = await inquirer.prompt([
+        {
+            name: "title",
+            type: "input",
+            message: "What is the new role?"
+        },
+        {
+            name: "salary",
+            type: "input",
+            message: "What is the new role's salary?"
+        }
+    ]);
+    const departments = await viewDepartments();
+    const { department_id } = await inquirer.prompt([
+        {
+            name: "department_id",
+            type: "input",
+            message: "Under what department does this role fall under?"
+        }
+    ]);
+    // when finished prompting, insert a new item into the db with that info
+    connection.query(
+        "INSERT INTO role SET ?",
+        {
+            title: answer.title,
+            salary: answer.salary,
+            department_id: department_id || 0
+        },
+        function (err) {
+            if (err) throw err;
+            console.log("You added a new role!");
+            start();
+        }
+    );
 }
 
 
@@ -240,12 +261,94 @@ function addDepartment() {
             );
         });
 }
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//        Update Employee
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+async function updateEmployee() {
+    // prompt for info about the new role
+    const employees = await viewEmployees();
+    const answer = await inquirer.prompt([
+        {
+            name: "employee",
+            type: "input",
+            message: "What employee do you want to update?"
+        }, {
+            name: "firstname",
+            type: "input",
+            message: "What is their first name?"
+        },{
+            name: "lastname",
+            type: "input",
+            message: "What is their last name?"
+        },{
+            name: "role",
+            type: "input",
+            message: "What is their role id?"
+        },{
+            name: "manager",
+            type: "input",
+            message: "What is their manager id?"
+        },
+    ])
+    // when finished prompting, insert a new item into the db with that info
+    connection.query(
+        "UPDATE employee SET ? WHERE ?",
+        [{
+            first_name: answer.firstname,
+            last_name: answer.lastname,
+            role_id: answer.role,
+            manager_id: answer.manager
+        }, {
+            id: answer.employee
+        }],
+        function (err) {
+            if (err) throw err;
+            console.log("You updated an employee!");
+            start();
+        }
+    );
+}
 
 
 
 
-// LEFT TO DO: [ADD] employees, roles, and departments; [UPDATE] employee roles, WRITE readme file.
-    // [ADD] functions are comparable to postAuction in greatBay activity
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//        Update Departments
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+async function updateDepartment() {
+    // prompt for info about the new role
+    const departments = await viewDepartments();
+    const answer = await inquirer.prompt([
+        {
+            name: "department_id",
+            type: "input",
+            message: "What department do you want to update?"
+        }, {
+            name: "name",
+            type: "input",
+            message: "What is the new department name?"
+        },
+    ])
+    // when finished prompting, insert a new item into the db with that info
+    connection.query(
+        "UPDATE department SET ? WHERE ?",
+        [{
+            name: answer.name
+        }, {
+            id: answer.department_id
+        }],
+        function (err) {
+            if (err) throw err;
+            console.log("You updated the department!");
+            start();
+        }
+    );
+}
+
+
+// LEFT TO DO: [UPDATE] employee roles, WRITE readme file.
 
 // BONUS: [UPDATE] employee managers, [VIEW] employees by manager, [DELETE] departments, roles, and employees, [VIEW] total salary budget
