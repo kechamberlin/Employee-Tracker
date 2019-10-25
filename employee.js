@@ -56,8 +56,12 @@ function start() {
             }
             else if (answer.whatDo === "Add Employee") {
                 console.log("add an employee");
-                
-
+                // addEmployee();
+            }
+            else if (answer.whatDo === "Add Role") {
+                console.log("add a role");
+                // addRole();
+            
 
 
             } else {
