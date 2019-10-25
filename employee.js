@@ -45,8 +45,11 @@ function start() {
             else if (answer.whatDo === "View All Roles") {
                 console.log("view all roles");
                 viewRoles();
+            }
+            else if (answer.whatDo === "View All Departments") {
+                console.log("view all departments");
+                viewDepartments();
             // }
-            
 
 
 
@@ -81,6 +84,18 @@ function viewEmployees() {
 
 function viewRoles() {
     connection.query("SELECT * FROM role", function (err, results) {
+        if (err) throw err;
+        console.table(results);
+        start();
+    })
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//       View All Departments
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function viewDepartments() {
+    connection.query("SELECT * FROM department", function (err, results) {
         if (err) throw err;
         console.table(results);
         start();
