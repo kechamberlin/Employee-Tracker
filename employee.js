@@ -60,7 +60,7 @@ function start() {
             }
             else if (answer.whatDo === "Add Role") {
                 console.log("add a role");
-                // addRole();
+                addRole();
             }
             else if (answer.whatDo === "Add Department") {
                 console.log("add a department");
@@ -172,50 +172,38 @@ function addEmployee() {
 //            Add Role
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function addEmployee() {
-    // prompt for info about the new employee
+function addRole() {
+    // prompt for info about the new role
     inquirer
         .prompt([
             {
-                name: "first_name",
+                name: "title",
                 type: "input",
-                message: "What is their first name?"
+                message: "What is the new role?"
             },
             {
-                name: "last_name",
+                name: "salary",
                 type: "input",
-                message: "What is their last name?"
+                message: "What is the new role's salary?"
             },
             {
-                name: "role_id",
+                name: "department_id",
                 type: "input",
-                message: "What is their role?"
-            },
-            {
-                name: "manager_id",
-                type: "input",
-                message: "Who is their manager?",
-                validate: function (value) {
-                    if (isNaN(value) === false) {
-                        return true;
-                    }
-                    return false;
-                }
+                message: "Under what department does this role fall under?"
             }
         ])
         .then(function (answer) {
             // when finished prompting, insert a new item into the db with that info
             connection.query(
-                "INSERT INTO employee SET ?",
+                "INSERT INTO role SET ?",
                 {
-                    first_name: answer.first_name,
-                    last_name: answer.last_name,
-                    role_id: answer.role_id || 0,
-                    manager_id: answer.manager_id || 0
+                    title: answer.title,
+                    salary: answer.salary,
+                    department_id: answer.department_id || 0
                 },
                 function (err) {
                     if (err) throw err;
-                    console.log("You added a new employee!");
+                    console.log("You added a new role!");
                     start();
                 }
             );
@@ -227,8 +215,8 @@ function addEmployee() {
 //          Add Departments
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function addEmployee() {
-    // prompt for info about the new employee
+function addDepartment() {
+    // prompt for info about the new department
     inquirer
         .prompt([
             {
