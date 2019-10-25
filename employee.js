@@ -172,14 +172,110 @@ function addEmployee() {
 //            Add Role
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
+function addEmployee() {
+    // prompt for info about the new employee
+    inquirer
+        .prompt([
+            {
+                name: "first_name",
+                type: "input",
+                message: "What is their first name?"
+            },
+            {
+                name: "last_name",
+                type: "input",
+                message: "What is their last name?"
+            },
+            {
+                name: "role_id",
+                type: "input",
+                message: "What is their role?"
+            },
+            {
+                name: "manager_id",
+                type: "input",
+                message: "Who is their manager?",
+                validate: function (value) {
+                    if (isNaN(value) === false) {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        ])
+        .then(function (answer) {
+            // when finished prompting, insert a new item into the db with that info
+            connection.query(
+                "INSERT INTO employee SET ?",
+                {
+                    first_name: answer.first_name,
+                    last_name: answer.last_name,
+                    role_id: answer.role_id || 0,
+                    manager_id: answer.manager_id || 0
+                },
+                function (err) {
+                    if (err) throw err;
+                    console.log("You added a new employee!");
+                    start();
+                }
+            );
+        });
+}
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //          Add Departments
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
+function addEmployee() {
+    // prompt for info about the new employee
+    inquirer
+        .prompt([
+            {
+                name: "first_name",
+                type: "input",
+                message: "What is their first name?"
+            },
+            {
+                name: "last_name",
+                type: "input",
+                message: "What is their last name?"
+            },
+            {
+                name: "role_id",
+                type: "input",
+                message: "What is their role?"
+            },
+            {
+                name: "manager_id",
+                type: "input",
+                message: "Who is their manager?",
+                validate: function (value) {
+                    if (isNaN(value) === false) {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        ])
+        .then(function (answer) {
+            // when finished prompting, insert a new item into the db with that info
+            connection.query(
+                "INSERT INTO employee SET ?",
+                {
+                    first_name: answer.first_name,
+                    last_name: answer.last_name,
+                    role_id: answer.role_id || 0,
+                    manager_id: answer.manager_id || 0
+                },
+                function (err) {
+                    if (err) throw err;
+                    console.log("You added a new employee!");
+                    start();
+                }
+            );
+        });
+}
 
 
 
