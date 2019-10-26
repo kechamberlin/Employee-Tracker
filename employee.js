@@ -75,7 +75,7 @@ function start() {
             }
             else if (answer.whatDo === "Update a Role") {
                 console.log("updated a role");
-                // updateRole();
+                updateRole();
             }
             else if (answer.whatDo === "Update a Department") {
                 console.log("updated a department");
@@ -92,6 +92,10 @@ function start() {
 // ==============================
 //         MAIN FUNCTIONS
 // ==============================
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//             VIEW
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //        View All Employees
@@ -135,12 +139,24 @@ function viewDepartments() {
     });
 }
 
+
+
+
+
+
+
+
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//             ADD
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //           Add Employee
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function addEmployee() {
-    // prompt for info about the new employee
     inquirer
         .prompt([
             {
@@ -171,7 +187,6 @@ function addEmployee() {
             }
         ])
         .then(function (answer) {
-            // when finished prompting, insert a new item into the db with that info
             connection.query(
                 "INSERT INTO employee SET ?",
                 {
@@ -261,12 +276,24 @@ function addDepartment() {
             );
         });
 }
+
+
+
+
+
+
+
+
+
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//        Update Employee
+//             UPDATE
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//        Update an Employee
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 async function updateEmployee() {
-    // prompt for info about the new role
     const employees = await viewEmployees();
     const answer = await inquirer.prompt([
         {
@@ -291,7 +318,6 @@ async function updateEmployee() {
             message: "What is their manager id?"
         },
     ])
-    // when finished prompting, insert a new item into the db with that info
     connection.query(
         "UPDATE employee SET ? WHERE ?",
         [{
@@ -310,12 +336,50 @@ async function updateEmployee() {
     );
 }
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//          Update a Role
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-
+async function updateRole() {
+    const roles = await viewRoles();
+    const answer = await inquirer.prompt([
+        {
+            name: "role",
+            type: "input",
+            message: "What role do you want to update?"
+        }, {
+            name: "title",
+            type: "input",
+            message: "What is the new title of the role?"
+        },{
+            name: "salary",
+            type: "input",
+            message: "What is the new salary of this updated role?"
+        },{
+            name: "department_id",
+            type: "input",
+            message: "In what department is this updated role?"
+        },
+    ])
+    connection.query(
+        "UPDATE role SET ? WHERE ?",
+        [{
+            title: answer.title,
+            salary: answer.salary,
+            department_id: answer.department_id,
+        }, {
+            id: answer.role
+        }],
+        function (err) {
+            if (err) throw err;
+            console.log("You updated a role!");
+            start();
+        }
+    );
+}
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//        Update Departments
+//        Update a Department
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 async function updateDepartment() {
@@ -351,4 +415,4 @@ async function updateDepartment() {
 
 // LEFT TO DO: [UPDATE] employee roles, WRITE readme file.
 
-// BONUS: [UPDATE] employee managers, [VIEW] employees by manager, [DELETE] departments, roles, and employees, [VIEW] total salary budget
+// BONUS: [UPDATE] employee managers
