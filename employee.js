@@ -411,8 +411,3 @@ async function updateDepartment() {
         }
     );
 }
-
-
-// LEFT TO DO: [UPDATE] employee roles, WRITE readme file.
-
-// BONUS: [UPDATE] employee managers
